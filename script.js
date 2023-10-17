@@ -51,3 +51,24 @@ function opreate(operator, a, b) {
             break;
     }
 }
+
+//DOM
+const numberButtons = document.querySelectorAll('button[id^="number-"]');
+const output = document.querySelector('#output');
+const equalsButton = document.querySelector('#equals');
+const clearButton = document.querySelector('#clear');
+let currentOutput = "";
+
+numberButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        currentOutput += button.textContent;
+        output.innerHTML = currentOutput;
+    });
+});
+
+clearButton.addEventListener('click', () => {
+    output.innerHTML = "0";
+    currentOutput = "";
+});
+
+

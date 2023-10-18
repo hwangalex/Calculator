@@ -1,63 +1,62 @@
-let num1 = 0;
-let num2 = 0;
-let operator = '';
+let num1 = null;
+let num2 = null;
+let operator = null;
 
 
 function add(a, b) {
-    num1 = a;
-    num2 = b;
+    a = Number(num1);
+    b = Number(num2);
     operator = '+';
-    return num1 + num2;
+    return a + b;
 }
 
 function subtract(a, b) {
-    num1 = a;
-    num2 = b;
+    a = Number(num1);
+    b = Number(num2);
     operator = '-';
     return num1 - num2;
 }
 
 function multiply(a, b) {
-    num1 = a;
-    num2 = b;
+    a = Number(num1);
+    b = Number(num2);
     operator = '*';
     return num1 * num2;
 }
 
 function divide(a, b) {
-    if (num2 == 0) {
+    if (Number(num2) == 0) {
         return 'Error';
     }
 
-    num1 = a;
-    num2 = b;
+    a = Number(num1);
+    b = Number(num2);
     operator = '/';
     return num1 / num2;
 }
 
-function opreate(operator, a, b) {
+function operate(operator, a, b) {
     switch (operator) {
         case '+':
-            add(a, b);
-            break;
+            return add(a, b);
         case '-':
-            subtract(a, b);
-            break;
+            return subtract(a, b);
         case '*':
-            multiply(a, b);
-            break;
+            return multiply(a, b);
         case '/':
-            divide(a, b);
-            break;
+            return divide(a, b);
     }
 }
 
 //DOM
 const numberButtons = document.querySelectorAll('button[id^="number-"]');
+const operatorButtons = document.querySelectorAll('button[id^="operator-"]');
 const output = document.querySelector('#output');
 const equalsButton = document.querySelector('#equals');
 const clearButton = document.querySelector('#clear');
 let currentOutput = "";
+let result = null;
+
 
 numberButtons.forEach(button => {
     button.addEventListener('click', () => {
@@ -68,7 +67,39 @@ numberButtons.forEach(button => {
 
 clearButton.addEventListener('click', () => {
     output.innerHTML = "0";
+    result = null;
     currentOutput = "";
+    num1 = null;
+    num2 = null;
+    operator = null;
 });
 
+operatorButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        if (result === null) {
+            num1 = output.textContent;
+            result = output.textContent;
+            operator = button.textContent; 
+            currentOutput = "";
+        } else {
+            num2 = output.textContent;
+            result = operate(operator, num1, num2);
+            output.innerHTML = result;
+            num1 = result;
+            operator = button.textContent;
+            currentOutput = "";
+        }
+    });
+});
+
+equalsButton.addEventListener('click', () => {
+    num2 = output.textContent;
+    num1 = operate(operator, num1, num2);
+    output.innerHTML = num1;
+    result = null;
+    currentOutput = "";
+    num1 = null;
+    num2 = null;
+    operator = null;
+});
 
